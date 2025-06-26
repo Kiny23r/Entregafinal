@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lista de Vendas</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="pagina-venda">
+
+  <header class="header-clientes">
+    <h1>Lista de Vendas</h1>
+    <div>
+      <a href="/admin/venda/add" class="btn add-btn"><i class="fas fa-plus"></i> Registrar Venda</a>
+      <a href="/" class="btn add-btn"><i class="fas fa-home"></i> Início</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <% if (vendas.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Veículo</th>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% vendas.forEach(venda => { %>
+            <tr>
+              <td><%= venda.cliente?.nome || 'Cliente não encontrado' %></td>
+              <td><%= venda.veiculo?.modelo || 'Veículo não encontrado' %></td>
+              <td><%= venda.data?.toLocaleDateString('pt-BR') || 'Data não disponível' %></td>
+              <td>R$ <%= venda.valorFinal?.toFixed(2) || '0.00' %></td>
+              <td class="action-buttons">
+                <a href="/admin/venda/edt/<%= venda._id %>" class="edit-btn" title="Editar">
+                  <i class="fas fa-edit"></i> Editar
+                </a>
+                <form action="/admin/venda/del/<%= venda._id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja excluir esta venda?')">
+                    <i class="fas fa-trash-alt"></i> Excluir
+                  </button>
+                </form>
+              </td>
+              
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p class="center">Nenhuma venda registrada ainda.</p>
+    <% } %>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Concessionária Premium Motors - Todos os direitos reservados</p>
+  </footer>
+
+</body>
+</html>
